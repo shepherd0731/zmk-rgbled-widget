@@ -22,6 +22,8 @@
 
 #include <zmk_rgbled_widget/widget.h>
 
+#include <zmk/behavior.h>
+
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #define LED_GPIO_NODE_ID DT_COMPAT_GET_ANY_STATUS_OKAY(gpio_leds)
