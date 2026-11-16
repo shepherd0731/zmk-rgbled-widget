@@ -286,14 +286,34 @@ void set_layer_led_color(uint8_t color) {
 #if SHOW_LAYER_COLORS
 void update_layer_color(void) {
     uint8_t index = zmk_keymap_highest_layer_active();
+    uint8_t color = layer_color_idx[index];
 
-    if (led_layer_color != layer_color_idx[index]) {
-        led_layer_color = layer_color_idx[index];
-        struct blink_item color = {.color = led_layer_color};
-        LOG_INF("Setting layer color to %s for layer %d", color_names[led_layer_color], index);
-        k_msgq_put(&led_msgq, &color, K_NO_WAIT);
+    if (led_layer_color != color) {
+        struct zmk_behavior_binding binding = {
+            .behavior_dev = DEVICE_DT_NAME(DT_NODELABEL(lyrs)),
+            .param1 = color,
+        };
+
+        struct zmk_behavior_binding_event event = {
+            .layer = index,
+            .position = 0,
+            .timestamp = k_uptime_get(),
+        };
+
+        LOG_INF("Setting layer color to %s for layer %d",
+                color_names[color], index);
+
+        int ret = zmk_behavior_invoke_binding(&binding, event, true);
+
+        if (ret < 0) {
+            LOG_ERR("Failed to invoke RGB LED layer behavior: %d", ret);
+            return;
+        }
+
+        zmk_behavior_invoke_binding(&binding, event, false);
     }
 }
+#endif
 
 static int led_layer_color_listener_cb(const zmk_event_t *eh) {
     struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
