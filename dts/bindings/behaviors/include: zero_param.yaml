@@ -1,0 +1,5 @@
+description: RGB LED layer color synchronization behavior
+
+compatible: "zmk,behavior-rgbled-layer"
+
+include: one_param.yaml
