@@ -2,7 +2,7 @@ description: RGB LED widget indicator behavior
 
 compatible: "zmk,behavior-rgbled-widget"
 
-include: one_param.yaml
+include: zero_param.yaml
 
 properties:
   indicate-battery:
