@@ -313,7 +313,6 @@ void update_layer_color(void) {
         zmk_behavior_invoke_binding(&binding, event, false);
     }
 }
-#endif
 
 static int led_layer_color_listener_cb(const zmk_event_t *eh) {
     struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
