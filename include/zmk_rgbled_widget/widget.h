@@ -17,3 +17,5 @@ void indicate_connectivity(void);
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
 void indicate_layer(void);
 #endif
+
+void set_layer_led_color(uint8_t color);
