@@ -117,11 +117,7 @@ static void set_rgb_leds(uint8_t color, uint32_t duration_ms) {
 // separate thread
 K_MSGQ_DEFINE(led_msgq, sizeof(struct blink_item), 16, 1);
 
-void set_layer_led_color(uint8_t color) {
-    led_layer_color = color;
-    struct blink_item item = {.color = color};
-    k_msgq_put(&led_msgq, &item, K_NO_WAIT);
-}
+
 
 static void indicate_connectivity_internal(void) {
     struct blink_item blink = {.duration_ms = CONFIG_RGBLED_WIDGET_CONN_BLINK_MS};
@@ -280,6 +276,13 @@ ZMK_SUBSCRIPTION(led_battery_listener, zmk_battery_state_changed);
 #endif // IS_ENABLED(CONFIG_ZMK_BATTERY_REPORTING)
 
 uint8_t led_layer_color = 0;
+
+void set_layer_led_color(uint8_t color) {
+    led_layer_color = color;
+    struct blink_item item = {.color = color};
+    k_msgq_put(&led_msgq, &item, K_NO_WAIT);
+}
+
 #if SHOW_LAYER_COLORS
 void update_layer_color(void) {
     uint8_t index = zmk_keymap_highest_layer_active();
